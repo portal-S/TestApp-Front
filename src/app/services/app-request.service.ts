@@ -1,55 +1,55 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {Security} from "../security/security.component";
-import {History} from "../histories/histories.component";
-import {SumData} from "../sumdata/sumdata.component";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Quote} from "../quote/quote.component";
 
 @Injectable()
 export class AppRequestService {
   private hostUrl: string = 'http://localhost:8090/'
-  private historyUrl: string = this.hostUrl + 'api/v1/histories'
-  private securityUrl: string = this.hostUrl + 'api/v1/securities'
-  private sumDataUrl: string = this.hostUrl + 'api/v1/sumdata'
-
+  private quoteUrl: string = this.hostUrl + 'api/v1/quotes'
   constructor(private http: HttpClient) {
 
   }
 
 
-  getSecurityById(id: number){
-    return this.http.get<Security>(this.securityUrl + '/' + id)
+  getTopByScore(){
+    return  this.http.get<Quote[]>(this.quoteUrl + '/topByScore')
   }
 
-  delSecurityById(id: number){
-    return this.http.delete(this.securityUrl + '/' + id)
+  getDistinctByScore(){
+    return this.http.get<Quote[]>(this.quoteUrl + '/distinctByScore')
   }
 
-  saveSecurity(formData: FormData){
-    this.http.post(this.securityUrl, formData).subscribe()
+  getTopByPostedDate(){
+    return this.http.get<Quote>(this.quoteUrl + '/topByPostedDate')
   }
 
-  updateSecurity(security: Security){
-    this.http.put(this.securityUrl, security).subscribe()
+  getRandomElement(){
+    return this.http.get<Quote>(this.quoteUrl + '/randomElement')
   }
 
-  getHistoryById(id: number){
-    return this.http.get<History>(this.historyUrl + '/' + id)
+  getById(id: number){
+    return this.http.get<Quote>(this.quoteUrl + '/' + id)
   }
 
-  delHistoryById(id: number){
-    return this.http.delete(this.historyUrl + '/' + id)
+  delQuoteById(id: number){
+    return this.http.delete(this.quoteUrl + '/' + id)
   }
 
-  saveHistory(formData: FormData){
-    this.http.post(this.historyUrl, formData).subscribe()
+  saveQuote(quote: Quote){
+    this.http.post(this.quoteUrl, quote).subscribe()
   }
 
-  updateHistory(history: History){
-    this.http.put(this.historyUrl, history).subscribe()
+  updateQuote(quote: Quote){
+    this.http.put(this.quoteUrl, quote).subscribe()
   }
 
-  getSumData(secId: string){
-    return this.http.get<SumData[]>(this.sumDataUrl + '/' + secId)
+  likeQuote(id: number){
+    this.http.put(this.quoteUrl + '/like', {}, { params: { id: id} }).subscribe()
   }
+
+  disLikeQuote(id: number){
+    this.http.put(this.quoteUrl + '/dislike', {}, { params: { id: id} }).subscribe()
+  }
+
 
 }

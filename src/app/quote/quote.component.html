@@ -1,0 +1,87 @@
+<button style="margin-bottom: 5px" (click)="changeShowPanel()">{{panelText}}</button>
+<div *ngIf="openGetSrc" class="container">
+  <h3>Admin panel</h3>
+
+  <div class="container">
+    <h2>Get history by id</h2>
+    <div *ngIf="hasFoundById">
+      <h3>Text: {{quoteById.text}}</h3>
+      <h4>Author: {{quoteById.postedName}}</h4>
+      <h4>Score: {{quoteById.score}}</h4>
+      <h5>Date: {{quoteById.postedDate | date:'short'}}</h5>
+    </div>
+    <form (submit)="getById(getId.value)">
+      <input type="number" placeholder="Id" #getId>
+      <button>Get</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h2>Delete quote by id</h2>
+    <form (submit)="delById(delId.value)">
+      <input type="number" placeholder="Id" #delId>
+      <button>Get</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h2>Create quote</h2>
+    <form (ngSubmit)="create(createText.value)">
+      <input type="text" placeholder="text" #createText>
+      <button>Create</button>
+      <hr>
+    </form>
+  </div>
+
+  <div class="container">
+    <h2>Update quote</h2>
+    <form (submit)="update(updateId.value, updateText.value, updateScore.value)">
+      <input type="number" placeholder="Id" #updateId>
+      <input type="text" placeholder="Text" #updateText>
+      <input type="number" placeholder="Score" #updateScore>
+      <button>Update</button>
+      <hr>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Random Quote</h2>
+  <div >
+    <h3>Text: {{random.text}}</h3>
+    <h4>Author: {{random.postedName}}</h4>
+    <h4>Score: {{random.score}}</h4>
+    <h5>Date: {{random.postedDate | date:'short'}}</h5>
+    <button style="margin-bottom: 5px" (click)="like(random.id, 'random')">+</button>
+    <button style="margin-bottom: 5px" (click)="disLike(random.id, 'random')">-</button>
+  </div>
+</div>
+
+<div class="container">
+  <h2>Last Quote</h2>
+  <div >
+    <h3>Text: {{topByPostedDate.text}}</h3>
+    <h4>Author: {{topByPostedDate.postedName}}</h4>
+    <h4>Score: {{topByPostedDate.score}}</h4>
+    <h5>Date: {{topByPostedDate.postedDate | date:'short'}}</h5>
+    <button style="margin-bottom: 5px" (click)="like(topByPostedDate.id, 'lastDate')">+</button>
+    <button style="margin-bottom: 5px" (click)="disLike(topByPostedDate.id, 'lastDate')">-</button>
+  </div>
+</div>
+
+<div class="container">
+  <button *ngIf="topScore" style="margin-bottom: 5px" (click)="changeSortScore()">Flop 10</button>
+  <button *ngIf="!topScore" style="margin-bottom: 5px" (click)="changeSortScore()">Top 10</button>
+  <h2>{{sortButtonText}}</h2>
+  <ul>
+    <li *ngFor="let info of sortedByScore">
+      <p>Text: {{info.text}}</p>
+      <p>Author: {{info.postedName}}</p>
+      <p>Score: {{info.score}}</p>
+      <p>Date: {{info.postedDate | date:'short'}}</p>
+      <button style="margin-bottom: 5px" (click)="like(info.id, 'sortByScore')">+</button>
+      <button style="margin-bottom: 5px" (click)="disLike(info.id, 'sortByScore')">-</button>
+      <hr>
+    </li>
+  </ul>
+</div>
